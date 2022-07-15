@@ -1,4 +1,3 @@
-<button
+<button [ngClass] ="!isNumber() ? {'button-operator':true} : {'button-operand':true}"
     (click)="onClick()"
-    
 >{{ content }}</button>

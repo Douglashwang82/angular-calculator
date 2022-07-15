@@ -1,0 +1,24 @@
+button {
+    display:block;
+    min-width: 100%;
+    min-height:100%;
+    cursor: pointer;
+    font-size: 2rem;
+    outline: none;
+    background-color: #191D24;
+    color: #A6ADBA;
+}
+
+.button-operator {
+    background-color: #6419E6;
+    color: #F5F5F5;
+}
+
+.button-operator:hover {
+    background-color: #8b55e9;
+    color: #F5F5F5;
+}
+
+.button-operand:hover {
+    background-color: #47474e;
+}

@@ -15,4 +15,8 @@ export class CustomButtonComponent implements OnInit {
   onClick() {
     this.btnClick.emit(this.content);
   }
+
+  isNumber(){
+    return Number(this.content) || this.content === '0' || this.content == '+/-' || this.content == '.';
+  }
 }

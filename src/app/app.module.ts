@@ -11,7 +11,7 @@ import { BoardComponent } from './components/board/board.component';
     AppComponent,
     ContainerComponent,
     CustomButtonComponent,
-    BoardComponent
+    BoardComponent,
   ],
   imports: [
     BrowserModule
@@ -19,4 +19,4 @@ import { BoardComponent } from './components/board/board.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,3 +1,37 @@
+
+.display{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    padding: 10px;
+    word-wrap: break-word;
+    word-break: break-all;
+    color: white;
+    background-color: #2A303C;
+    font-family: 'Orbitron', sans-serif;
+}
+
+
+.miniboard {
+    height:40px;
+}
+
 .board {
-    height:100px;
+    height:80px;
+}
+
+h4 {
+    font-size: 2vw;
+}
+h1 {
+    font-size: 4vw;
+}
+
+@media only screen and (min-width: 1000px) {
+    h4 {
+        font-size: 18px;
+    }
+    h1 {
+        font-size: 36px;
+    }
 }
