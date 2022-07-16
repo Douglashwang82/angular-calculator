@@ -1,21 +1,23 @@
-.calculator-container{
+.calculator-container {
+
     display: grid;
     justify-content: center;
     align-content: center;
     min-height: 100vh;
     background-color: #242933;
-    
+
 }
-.btn-container {
+
+.calculator-btn-container {
     display: grid;
-    grid-template-columns: repeat(4,20vw);
+    grid-template-columns: repeat(4, 20vw);
     grid-template-rows: repeat(5, 110px);
-    gap:5px;
-    
+    gap: 5px;
+
 }
 
 @media only screen and (min-width: 1000px) {
-    .btn-container {
+    .calculator-btn-container {
         display: grid;
         grid-template-columns: repeat(4, 200px);
         grid-template-rows: repeat(5, 110px);

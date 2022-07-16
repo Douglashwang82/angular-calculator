@@ -1,7 +1,15 @@
-import { ThisReceiver } from '@angular/compiler';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, DoCheck } from '@angular/core';
-import { calculateResult } from '../../helperfunctions/calculatorHelper';
-import { logStates } from '../../helperfunctions/loggers';
+import { Component, OnInit } from '@angular/core';
+import { CalculatorService } from 'src/app/services/calculator.service';
+import { LoggerService } from 'src/app/services/logger.service';
+
+type CalculatorRecord = {
+  previousOperand: string,
+  currentOperand: string,
+  operator: string,
+  result: string,
+  id?: string,
+}
+
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
@@ -17,7 +25,7 @@ import { logStates } from '../../helperfunctions/loggers';
       y
       0
 
-    Issues:
+    Issues sovled:
       max_safe_integer = 2^53 - 1
       calculation
           float ponit
@@ -43,16 +51,19 @@ export class ContainerComponent implements OnInit {
   isUpdatingCurrentOperand: boolean = false;
   miniDisplay: string = '';
   display: string = '0';
+  calculatorRecords: CalculatorRecord[] = [];
 
-  constructor() { }
+  constructor(private calculatorService: CalculatorService, private loggerService: LoggerService) { }
 
 
   ngDoCheck() {
     this.updateDisplay();
-    logStates(this);
+    this.loggerService.logObjectStates(this);
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.calculatorService.getCalculatorRecords().subscribe((records) => (this.calculatorRecords = records.reverse()));
+  }
 
   clickOperand(content: string) {
     // Check maximum length of number
@@ -114,9 +125,19 @@ export class ContainerComponent implements OnInit {
     // handle case: x + y =.....
     if (Number(this.result) || this.result === '0') this.previousOperand = this.result;
     // basic use case
-    this.result = calculateResult(Number(this.previousOperand), Number(this.currentOperand), this.operator);
+    this.result = this.calculatorService.calculateResult(Number(this.previousOperand), Number(this.currentOperand), this.operator);
     // handle calculate error
-    if (!Number(this.result) && Number(this.result) !== 0) this.errorMessage = this.result;
+    if (!Number(this.result) && Number(this.result) !== 0) { this.errorMessage = this.result }
+    else {
+      // success case
+      const newRecord: CalculatorRecord = {
+        "previousOperand": this.previousOperand,
+        "currentOperand": this.currentOperand,
+        "operator": this.operator,
+        "result": this.result
+      };
+      this.calculatorService.postCalculatorRecords(newRecord).subscribe((record) => this.calculatorRecords.unshift(record));
+    };
   }
 
   clickEqualSign() {
@@ -175,7 +196,11 @@ export class ContainerComponent implements OnInit {
       // case: y          -> -y
       ready = this.negativePositive(this.currentOperand)
       this.currentOperand = ready
-    } else {
+    } else if (this.previousOperand) {
+      ready = this.negativePositive(this.previousOperand)
+      this.previousOperand = ready;
+    }
+    else {
       return;
     }
   }
@@ -186,6 +211,15 @@ export class ContainerComponent implements OnInit {
     comma = comma || "";
     decimalPart = decimalPart || "";
     return intergerPart + comma + decimalPart;
+  }
+
+  setStates(calculatorRecord: CalculatorRecord) {
+    this.clear();
+    this.previousOperand = calculatorRecord.previousOperand
+    this.currentOperand = calculatorRecord.currentOperand;
+    this.operator = calculatorRecord.operator;
+    this.result = calculatorRecord.result;
+    this.updateDisplay();
   }
 
   updateDisplay() {

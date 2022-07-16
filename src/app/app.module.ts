@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { ContainerComponent } from './components/container/container.component';
 import { CustomButtonComponent } from './components/custom-button/custom-button.component';
 import { BoardComponent } from './components/board/board.component';
+import { HistoryComponent } from './components/history/history.component';
 
 @NgModule({
   declarations: [
@@ -12,9 +14,11 @@ import { BoardComponent } from './components/board/board.component';
     ContainerComponent,
     CustomButtonComponent,
     BoardComponent,
+    HistoryComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,11 @@
+<input type="checkbox" id="drawer-toggle" name="drawer-toggle" [checked]="isVisible" (change)="toggleHistory()" />
+<label for="drawer-toggle" id="drawer-toggle-label"></label>
+
+<div class="history-btn-container">
+    <h1>History</h1>
+    <div class="content">
+        <button *ngFor="let record of calculatorRecords" (click)="onClick(record)">
+            <p>{{record.previousOperand}} {{record.operator}} {{record.currentOperand}} = {{record.result}}</p>
+        </button>
+    </div>
+</div>

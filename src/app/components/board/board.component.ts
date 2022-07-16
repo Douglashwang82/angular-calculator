@@ -7,11 +7,11 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class BoardComponent implements OnInit {
   @Input() miniDisplay!: string;
-  @Input() display!:string;
+  @Input() display!: string;
 
   constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
 
 }
