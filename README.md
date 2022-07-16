@@ -8,7 +8,7 @@ No Backend:
 - `npm start`
 
 With Backend:
-*active backend from [angular-calculator-server](https://github.com/Douglashwang82/angular-calculator-server)
+- *active backend from [angular-calculator-server](https://github.com/Douglashwang82/angular-calculator-server)
 - `npm install`
 - `npm run dev`
 
