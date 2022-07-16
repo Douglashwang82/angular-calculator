@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, EMPTY } from 'rxjs';
+import{ environment } from '../../environments/environment';
 
 type CalculatorRecord = {
   previousOperand: string,
@@ -23,17 +24,21 @@ const httpOptions = {
 
 export class CalculatorService {
 
-  private apiUrl = 'http://localhost:3003/api/calculator';
+  // private apiUrl = 'http://localhost:3003/api/calculator';
+
+  private apiUrl = environment.apiURL;
 
   constructor(private http: HttpClient) { }
 
   getCalculatorRecords(): Observable<CalculatorRecord[]> {
+    if (!this.apiUrl) return EMPTY;
     const result = this.http.get<CalculatorRecord[]>(this.apiUrl);
     return result;
   }
 
 
   postCalculatorRecords(calulatorRecord: CalculatorRecord): Observable<CalculatorRecord> {
+    if (!this.apiUrl) return EMPTY;
     const result = this.http.post<CalculatorRecord>(this.apiUrl, calulatorRecord);
     return result
   }
