@@ -4,13 +4,13 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Usage
 No Backend:
-`npm install`
-`npm start`
+- `npm install`
+- `npm start`
 
 With Backend:
 *active backend from [angular-calculator-server](https://github.com/Douglashwang82/angular-calculator-server)
-`npm install`
-`npm run dev`
+- `npm install`
+- `npm run dev`
 
 ### Degisn
 [Figma](https://www.figma.com/file/8REH8pa7fC62HPCfqwkPPI/Untitled?node-id=0%3A1)
