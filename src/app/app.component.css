@@ -1,11 +1,12 @@
 nav {
     position: fixed;
+    display:inline-block;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
 }
 ul li {
     display:inline-block;
-    color: white;
     padding:20px;
-    font-family: 'Orbitron', sans-serif;
 }
 
 a {
@@ -14,5 +15,5 @@ a {
 }
 
 a:hover {
-    color: red;
+    color: rgb(214, 96, 224);
 }
