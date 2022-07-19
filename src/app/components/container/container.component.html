@@ -1,30 +1,29 @@
 <div class="calculator-container">
     <app-board [miniDisplay]="miniDisplay" [display]="display"></app-board>
-
     <!-- Notes: 
         alternative ngfor to create buttons but need to handle verify functions
     -->
     <div class="calculator-btn-container">
-        <app-custom-button content="CE" (btnClick)="clearEntry()"></app-custom-button>
-        <app-custom-button content="C" (btnClick)="clear()"></app-custom-button>
-        <app-custom-button content="" (btnClick)="null"></app-custom-button>
-        <app-custom-button content="÷" (btnClick)="clickOperator($event)"></app-custom-button>
+        <app-custom-button content="CE" (btnClick)="clearEntry()" [isNumberStyle]="false"></app-custom-button>
+        <app-custom-button content="C" (btnClick)="clear()" [isNumberStyle]="false"></app-custom-button>
+        <app-custom-button content="" (btnClick)="null" [isNumberStyle]="false"></app-custom-button>
+        <app-custom-button content="÷" (btnClick)="clickOperator($event)" [isNumberStyle]="false"></app-custom-button>
         <app-custom-button content="7" (btnClick)="clickOperand($event)"></app-custom-button>
         <app-custom-button content="8" (btnClick)="clickOperand($event)"></app-custom-button>
         <app-custom-button content="9" (btnClick)="clickOperand($event)"></app-custom-button>
-        <app-custom-button content="x" (btnClick)="clickOperator($event)"></app-custom-button>
+        <app-custom-button content="x" (btnClick)="clickOperator($event)" [isNumberStyle]="false"></app-custom-button>
         <app-custom-button content="4" (btnClick)="clickOperand($event)"></app-custom-button>
         <app-custom-button content="5" (btnClick)="clickOperand($event)"></app-custom-button>
         <app-custom-button content="6" (btnClick)="clickOperand($event)"></app-custom-button>
-        <app-custom-button content="-" (btnClick)="clickOperator($event)"></app-custom-button>
+        <app-custom-button content="-" (btnClick)="clickOperator($event)" [isNumberStyle]="false"></app-custom-button>
         <app-custom-button content="1" (btnClick)="clickOperand($event)"></app-custom-button>
         <app-custom-button content="2" (btnClick)="clickOperand($event)"></app-custom-button>
         <app-custom-button content="3" (btnClick)="clickOperand($event)"></app-custom-button>
-        <app-custom-button content="+" (btnClick)="clickOperator($event)"></app-custom-button>
+        <app-custom-button content="+" (btnClick)="clickOperator($event)" [isNumberStyle]="false"></app-custom-button>
         <app-custom-button content="+/-" (btnClick)="clickNegativePositive()"></app-custom-button>
         <app-custom-button content="0" (btnClick)="clickOperand($event)"></app-custom-button>
         <app-custom-button content="." (btnClick)="clickOperand($event)"></app-custom-button>
-        <app-custom-button content="=" (btnClick)="clickEqualSign()"></app-custom-button>
+        <app-custom-button content="=" (btnClick)="clickEqualSign()" [isNumberStyle]="false"></app-custom-button>
     </div>
     <app-history [calculatorRecords]="calculatorRecords" (btnClick)="setStates($event)"></app-history>
 </div>

@@ -2,14 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, EMPTY } from 'rxjs';
 import{ environment } from '../../environments/environment';
-
-type CalculatorRecord = {
-  previousOperand: string,
-  currentOperand: string,
-  operator: string,
-  result: string,
-  id?: string,
-}
+import {CalculatorRecord} from '../../models/calculatorStates.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,11 +14,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 
-
 export class CalculatorService {
-
-  // private apiUrl = 'http://localhost:3003/api/calculator';
-
   private apiUrl = environment.apiURL;
 
   constructor(private http: HttpClient) { }

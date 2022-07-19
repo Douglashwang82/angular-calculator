@@ -2,9 +2,9 @@
 <label for="drawer-toggle" id="drawer-toggle-label"></label>
 
 <div class="history-btn-container">
-    <h1>History</h1>
+    <h1 class="history-title">History</h1>
     <div class="content">
-        <button *ngFor="let record of calculatorRecords" (click)="onClick(record)">
+        <button *ngFor="let record of calculatorRecords" (click)="onClick(record)" class="history-button">
             <p>{{record.previousOperand}} {{record.operator}} {{record.currentOperand}} = {{record.result}}</p>
         </button>
     </div>

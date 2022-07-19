@@ -1,0 +1,15 @@
+.about{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    padding: 50px;
+    color:white;
+}
+
+.about > h1 {
+    font-size: 3em;
+}
+
+.about > h2 {
+    
+}

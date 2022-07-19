@@ -1,14 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CalculatorService } from 'src/app/services/calculator.service';
 import { LoggerService } from 'src/app/services/logger.service';
-
-type CalculatorRecord = {
-  previousOperand: string,
-  currentOperand: string,
-  operator: string,
-  result: string,
-  id?: string,
-}
+import { CalculatorRecord } from 'src/models/calculatorStates.model';
 
 @Component({
   selector: 'app-container',
@@ -43,18 +36,14 @@ type CalculatorRecord = {
           cases study
 */
 export class ContainerComponent implements OnInit {
-  previousOperand: string = '';
-  currentOperand: string = '';
-  operator: string = '';
-  result: string = '';
+  model = new CalculatorRecord('', '', '', ''); // previousOperand, currentOperand, operator, result
   errorMessage: string = '';
   isUpdatingCurrentOperand: boolean = false;
   miniDisplay: string = '';
-  display: string = '0';
+  display: string = '';
   calculatorRecords: CalculatorRecord[] = [];
 
   constructor(private calculatorService: CalculatorService, private loggerService: LoggerService) { }
-
 
   ngDoCheck() {
     this.updateDisplay();
@@ -67,32 +56,32 @@ export class ContainerComponent implements OnInit {
 
   clickOperand(content: string) {
     // Check maximum length of number
-    if (this.currentOperand.length >= 15 && !this.isUpdatingCurrentOperand) return;
+    if (this.model.currentOperand.length >= 15 && !this.isUpdatingCurrentOperand) return;
     // Handle cases: x + y = z
-    if (this.result) {
+    if (this.model.result) {
       // Recover from error
       if (this.errorMessage) this.clear();
       // case: x + y = z
-      this.previousOperand = this.result;
+      this.model.previousOperand = this.model.result;
       this.isUpdatingCurrentOperand = true;
-      this.result = '';
+      this.model.result = '';
     }
     // replace currentOperand or update currentOperand with concat()
     if (this.isUpdatingCurrentOperand) {
-      this.currentOperand = content;
+      this.model.currentOperand = content;
       //handle case '.' as first input
-      if (content === '.') this.currentOperand = '0.';
+      if (content === '.') this.model.currentOperand = '0.';
       this.isUpdatingCurrentOperand = false;
     } else {
       // handling multiple '.' case
-      if (content === '.' && this.currentOperand.includes('.')) return;
+      if (content === '.' && this.model.currentOperand.includes('.')) return;
       // handle leading zeros
-      if (!this.currentOperand.includes('.') && this.currentOperand.startsWith('0') && content === '0') return;
-      if (this.currentOperand == '0' && content !== '.') {
-        this.currentOperand = content;
+      if (!this.model.currentOperand.includes('.') && this.model.currentOperand.startsWith('0') && content === '0') return;
+      if (this.model.currentOperand == '0' && content !== '.') {
+        this.model.currentOperand = content;
       } else {
         // basic usage
-        this.currentOperand = this.currentOperand.concat(content);
+        this.model.currentOperand = this.model.currentOperand.concat(content);
       }
     }
   }
@@ -101,60 +90,52 @@ export class ContainerComponent implements OnInit {
     // Recover from error
     if (this.errorMessage) this.clear();
     // handle case: x + y + z + .....
-    if (this.operator && this.currentOperand && this.previousOperand && !this.result) this.calculate();
+    if (this.model.operator && this.model.currentOperand && this.model.previousOperand && !this.model.result) this.calculate();
     // handle case x++......
-    if (!this.currentOperand) {
-      if (this.previousOperand) {
-        this.operator = content;
+    if (!this.model.currentOperand) {
+      if (this.model.previousOperand) {
+        this.model.operator = content;
       }
       return;
     }
     // handle case: x + y = z
-    if (this.result) {
-      this.currentOperand = this.result;
-      this.result = '';
+    if (this.model.result) {
+      this.model.currentOperand = this.model.result;
+      this.model.result = '';
     }
     // case y -> y + 
-    this.previousOperand = this.currentOperand;
-    this.operator = content;
-    this.currentOperand = '';
+    this.model.previousOperand = this.model.currentOperand;
+    this.model.operator = content;
+    this.model.currentOperand = '';
     this.isUpdatingCurrentOperand = true;
   }
 
   calculate() {
-    // handle case: x + y =.....
-    if (Number(this.result) || this.result === '0') this.previousOperand = this.result;
     // basic use case
-    this.result = this.calculatorService.calculateResult(Number(this.previousOperand), Number(this.currentOperand), this.operator);
+    this.model.result = this.calculatorService.calculateResult(Number(this.model.previousOperand), Number(this.model.currentOperand), this.model.operator);
     // handle calculate error
-    if (!Number(this.result) && Number(this.result) !== 0) { this.errorMessage = this.result }
-    else {
+    if (!Number(this.model.result) && Number(this.model.result) !== 0) {
+      this.errorMessage = this.model.result
+    } else {
       // success case
-      const newRecord: CalculatorRecord = {
-        "previousOperand": this.previousOperand,
-        "currentOperand": this.currentOperand,
-        "operator": this.operator,
-        "result": this.result
-      };
-      this.calculatorService.postCalculatorRecords(newRecord).subscribe((record) => this.calculatorRecords.unshift(record));
+      this.calculatorService.postCalculatorRecords(this.model).subscribe((record) => this.calculatorRecords.unshift(record));
     };
   }
 
   clickEqualSign() {
     // case: x +
-    if (!this.currentOperand) this.currentOperand = this.previousOperand;
+    if (!this.model.currentOperand) this.model.currentOperand = this.model.previousOperand;
 
     // case: y
-    if (!this.previousOperand || !this.operator) return;
+    if (!this.model.previousOperand || !this.model.operator) return;
 
+    // handle case: x + y =.....
+    if (Number(this.model.result) || this.model.result === '0') this.model.previousOperand = this.model.result;
     this.calculate();
   }
 
   clear() {
-    this.previousOperand = '';
-    this.currentOperand = '';
-    this.operator = '';
-    this.result = '';
+    this.model = new CalculatorRecord('', '', '', '');
     this.errorMessage = '';
   }
 
@@ -163,13 +144,13 @@ export class ContainerComponent implements OnInit {
       this.clear();
       return;
     }
-    if (this.result) {
+    if (this.model.result) {
       // case: x + y = z
-      this.previousOperand = this.currentOperand;
+      this.model.previousOperand = this.model.currentOperand;
       this.isUpdatingCurrentOperand = true;
-      this.result = ''
+      this.model.result = ''
     } else {
-      this.currentOperand = '';
+      this.model.currentOperand = '';
     }
   }
 
@@ -180,25 +161,25 @@ export class ContainerComponent implements OnInit {
   clickNegativePositive() {
     let ready: string;
     // case: x + y = z   -> -z
-    if (this.result) {
-      ready = this.negativePositive(this.result);
+    if (this.model.result) {
+      ready = this.negativePositive(this.model.result);
       this.clear()
-      this.previousOperand = ready;
-    } else if (this.previousOperand && this.operator && this.currentOperand) {
+      this.model.previousOperand = ready;
+    } else if (this.model.previousOperand && this.model.operator && this.model.currentOperand) {
       // case: x + y      -> x + (-y)
-      ready = this.negativePositive(this.currentOperand)
-      this.currentOperand = ready;
-    } else if (this.previousOperand && this.operator) {
+      ready = this.negativePositive(this.model.currentOperand)
+      this.model.currentOperand = ready;
+    } else if (this.model.previousOperand && this.model.operator) {
       // case: x +        -> x + (-x)
-      ready = this.negativePositive(this.previousOperand);
-      this.currentOperand = ready;
-    } else if (this.currentOperand) {
+      ready = this.negativePositive(this.model.previousOperand);
+      this.model.currentOperand = ready;
+    } else if (this.model.currentOperand) {
       // case: y          -> -y
-      ready = this.negativePositive(this.currentOperand)
-      this.currentOperand = ready
-    } else if (this.previousOperand) {
-      ready = this.negativePositive(this.previousOperand)
-      this.previousOperand = ready;
+      ready = this.negativePositive(this.model.currentOperand)
+      this.model.currentOperand = ready
+    } else if (this.model.previousOperand) {
+      ready = this.negativePositive(this.model.previousOperand)
+      this.model.previousOperand = ready;
     }
     else {
       return;
@@ -215,24 +196,27 @@ export class ContainerComponent implements OnInit {
 
   setStates(calculatorRecord: CalculatorRecord) {
     this.clear();
-    this.previousOperand = calculatorRecord.previousOperand
-    this.currentOperand = calculatorRecord.currentOperand;
-    this.operator = calculatorRecord.operator;
-    this.result = calculatorRecord.result;
+    this.model.previousOperand = calculatorRecord.previousOperand
+    this.model.currentOperand = calculatorRecord.currentOperand;
+    this.model.operator = calculatorRecord.operator;
+    this.model.result = calculatorRecord.result;
     this.updateDisplay();
   }
 
+  handleNegativeNumberDisplay(number: string) {
+    const formatted = number.startsWith('-') ? '(' + number + ")" : number;
+    return formatted;
+  }
+  
   updateDisplay() {
-    const handleNegativeInMiniBoard = this.currentOperand.startsWith('-') ? '(' + this.currentOperand + ")" : this.currentOperand;
-
-    this.miniDisplay = this.result ?
-      `${this.previousOperand} ${this.operator} ${handleNegativeInMiniBoard} =` :
-      `${this.previousOperand} ${this.operator}`;
+    this.miniDisplay = this.model.result ?
+      `${this.handleNegativeNumberDisplay(this.model.previousOperand)} ${this.model.operator} ${this.handleNegativeNumberDisplay(this.model.currentOperand)} =` :
+      `${this.handleNegativeNumberDisplay(this.model.previousOperand)} ${this.model.operator}`;
 
     this.display = `${this.errorMessage ? this.errorMessage :
-      this.result ? this.formatDisplayStringNumber(this.result) :
-        this.currentOperand ? this.formatDisplayStringNumber(this.currentOperand) :
-          this.previousOperand ? this.formatDisplayStringNumber(this.previousOperand) :
+      this.model.result ? this.formatDisplayStringNumber(this.model.result) :
+        this.model.currentOperand ? this.formatDisplayStringNumber(this.model.currentOperand) :
+          this.model.previousOperand ? this.formatDisplayStringNumber(this.model.previousOperand) :
             '0'
       }`;
   }

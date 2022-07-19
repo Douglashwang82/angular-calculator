@@ -1,0 +1,18 @@
+nav {
+    position: fixed;
+}
+ul li {
+    display:inline-block;
+    color: white;
+    padding:20px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+a {
+    color:white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: red;
+}

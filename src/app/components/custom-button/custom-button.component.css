@@ -3,8 +3,7 @@ button {
     min-width: 100%;
     min-height:100%;
     cursor: pointer;
-    font-size: 2rem;
-    outline: none;
+    font-size: 2em;
     background-color: #191D24;
     color: #A6ADBA;
 }

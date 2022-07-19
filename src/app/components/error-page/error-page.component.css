@@ -1,0 +1,6 @@
+.error-page-div {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    color:red;
+}

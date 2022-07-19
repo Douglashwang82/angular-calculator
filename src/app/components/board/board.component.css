@@ -1,5 +1,4 @@
-
-.display{
+.board {
     display: flex;
     align-items: flex-end;
     flex-direction: column;
@@ -12,26 +11,28 @@
 }
 
 
-.miniboard {
-    height:40px;
+.minidisplay {
+    height: 40px;
 }
 
-.board {
-    height:80px;
-}
-
-h4 {
+.minidisplay-text {
     font-size: 2vw;
 }
-h1 {
+
+.display {
+    height: 80px;
+}
+
+.display-text {
     font-size: 4vw;
 }
 
 @media only screen and (min-width: 1000px) {
-    h4 {
+    .minidisplay-text {
         font-size: 18px;
     }
-    h1 {
+
+    .display-text {
         font-size: 36px;
     }
 }

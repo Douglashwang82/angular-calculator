@@ -1,3 +1,9 @@
-<button [ngClass] ="!isNumber() ? {'button-operator':true} : {'button-operand':true}"
+<!--    
+    alternatives:
+    [class]="isBlack() ? {'button-operand':true} : {'button-operator':true}"  
+-->
+<button 
+    [class.button-operand]="isNumberStyle"
+    [class.button-operator]="!isNumberStyle"  
     (click)="onClick()"
->{{ content }}</button>
+    >{{ content }}</button>

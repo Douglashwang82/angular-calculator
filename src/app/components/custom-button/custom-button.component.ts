@@ -6,17 +6,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./custom-button.component.css']
 })
 export class CustomButtonComponent implements OnInit {
-  @Input() content!: string;
-  @Output() btnClick: EventEmitter<string>  = new EventEmitter();
+  @Input() content: string = "";
+  @Output() btnClick: EventEmitter<string> = new EventEmitter();
+  @Input() isNumberStyle: boolean = true;
+  test:boolean = true;
   constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onClick() {
     this.btnClick.emit(this.content);
-  }
-
-  isNumber(){
-    return Number(this.content) || this.content === '0' || this.content == '+/-' || this.content == '.';
   }
 }
