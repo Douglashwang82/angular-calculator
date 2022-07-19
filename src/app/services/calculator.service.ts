@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, EMPTY } from 'rxjs';
+import { Observable, EMPTY, throwError, catchError } from 'rxjs';
 import{ environment } from '../../environments/environment';
 import {CalculatorRecord} from '../../models/calculatorStates.model';
 
@@ -13,7 +13,6 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-
 export class CalculatorService {
   private apiUrl = environment.apiURL;
 
@@ -21,15 +20,24 @@ export class CalculatorService {
 
   getCalculatorRecords(): Observable<CalculatorRecord[]> {
     if (!this.apiUrl) return EMPTY;
-    const result = this.http.get<CalculatorRecord[]>(this.apiUrl);
-    return result;
+    return this.http.get<CalculatorRecord[]>(this.apiUrl).pipe(catchError(
+      (error) => {
+        console.error(error);
+        return throwError(() => new Error('Error raise when making GET request using CalculatorService.'));
+      }
+    ));
   }
 
 
   postCalculatorRecords(calulatorRecord: CalculatorRecord): Observable<CalculatorRecord> {
     if (!this.apiUrl) return EMPTY;
     const result = this.http.post<CalculatorRecord>(this.apiUrl, calulatorRecord);
-    return result
+    return this.http.post<CalculatorRecord>(this.apiUrl, calulatorRecord).pipe(catchError(
+      (error) => {
+        console.error(error);
+        return throwError(() => new Error('Error raise when making POST request using CalculatorService.'))
+      }
+    ))
   }
 
 

@@ -51,7 +51,8 @@ export class ContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.calculatorService.getCalculatorRecords().subscribe((records) => (this.calculatorRecords = records.reverse()));
+    this.calculatorService.getCalculatorRecords().subscribe((records) => (
+      this.calculatorRecords = Array.isArray(records) ? records.reverse() : []));
   }
 
   clickOperand(content: string) {
